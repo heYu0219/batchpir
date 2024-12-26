@@ -159,7 +159,7 @@ func GetAnswer(DB [][]*big.Int, queries [][]int) []*big.Int {
 }
 
 // MakeErrorAns 基于正确的应答构造错误应答
-func MakeErrorAns(ans []*big.Int, idx []int) []*big.Int {
+func MakeErrorAns1(ans []*big.Int, idx []int) []*big.Int {
 	// 创建一个新的错误应答数组，初始为 ans 的副本
 	errorAns := make([]*big.Int, len(ans))
 	for i, v := range ans {
@@ -172,8 +172,27 @@ func MakeErrorAns(ans []*big.Int, idx []int) []*big.Int {
 	// 修改指定索引的值
 	for _, i := range idx {
 		// 获取当前值，并加上一个随机数（0到19）
-		randValue := mRand.Intn(20)
-		errorAns[i].Add(errorAns[i], big.NewInt(int64(randValue)))
+		// randValue := mRand.Intn(20)
+		errorAns[i].Add(errorAns[i], big.NewInt(5))
+	}
+
+	return errorAns
+}
+func MakeErrorAns2(ans []*big.Int, idx []int) []*big.Int {
+	// 创建一个新的错误应答数组，初始为 ans 的副本
+	errorAns := make([]*big.Int, len(ans))
+	for i, v := range ans {
+		errorAns[i] = new(big.Int).Set(v)
+	}
+
+	// 随机数生成器，确保每次运行有不同的结果
+	mRand.Seed(time.Now().UnixNano())
+
+	// 修改指定索引的值
+	for _, i := range idx {
+		// 获取当前值，并加上一个随机数（0到19）
+		// randValue := mRand.Intn(20)
+		errorAns[i].Sub(errorAns[i], big.NewInt(7))
 	}
 
 	return errorAns
